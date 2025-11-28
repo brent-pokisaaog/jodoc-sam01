@@ -1,0 +1,92 @@
+                
+name: CI/CD-1uozdojnhz
+on: 
+  push:
+ 
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+         image: [v-rc3tkvrns7,v-ckq67kgg8j]
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image without explicit login
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: buildimage/${{matrix.image}}:latest
+      - name: Verify the built image (optional)
+        run: docker image ls
+
+  build-image-v02:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+         image: [v-5qludtsjlu,v-gfi3btsu2y]
+    continue-on-error: true
+    needs: build-image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image without explicit login
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: buildimage/${{matrix.image}}:latest
+      - name: Verify the built image (optional)
+        run: docker image ls
+
+  build-image-v03:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+         image: [v-1q4gsco6dg,v-564yda1ln9]
+    continue-on-error: true
+    needs: build-image-v02
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image without explicit login
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: buildimage/${{matrix.image}}:latest
+      - name: Verify the built image (optional)
+        run: docker image ls
+
+  build-image-v04:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+         image: [v-f2g1nq43sn,v-xokc4kkdjj]
+    continue-on-error: true
+    needs: build-image-v03
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image without explicit login
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: buildimage/${{matrix.image}}:latest
+      - name: Verify the built image (optional)
+        run: docker image ls
